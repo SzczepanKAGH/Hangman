@@ -1,0 +1,97 @@
+Poziom 1
+
+Zwierzęta
+	pies
+	kot
+	lew
+	delfin
+	żaba
+Owoce i warzywa
+	jabłko
+	banan
+	ziemniak
+	granat
+	jagoda
+Angielskie słówka
+	car
+	friend
+	mother
+	new
+	fun
+Stolice
+	harare
+	kijów
+	apia
+	dakar
+	lima
+Państwa
+	usa
+	czechy
+	polska
+	kanada
+	chiny 
+Poziom 2
+
+Zwierzęta
+	wąż
+	żyrafa
+	krokodyl
+	słoń
+	mrówka
+Owoce i warzywa
+	gruszka
+	pigwa
+	brukselka
+	groszek
+	agrest
+Angielskie słówka
+	turkey
+	shark
+	plane
+	basket
+	uncle
+Stolice
+	paramarido
+	waszyngton
+	sztokholm
+	tokio
+	budapeszt
+Państwa
+	bangladesz
+	argentyna
+	watykan
+	argentyna
+	dania
+Poziom 3
+
+Zwierzęta
+	jeżozwierz
+	szczupak
+	kałamarnica
+	jaszczurka
+	kapibara
+	
+Owoce i warzywa
+	porzeczka
+	żurawina
+	rambutan
+	grejpfrut
+	karambola
+Angielskie słówka
+	supercalifragilisticexpialidocious
+	extraordynary
+	various
+	breakfast
+	umbrela
+Stolice
+	jamusukro
+	montevideo
+	magadiszu
+	wellington
+	tegucigalpa
+Państwa
+	tuvalu
+	azrebejdżan
+	czarnogóra
+	kamerun
+	lichtenstein
