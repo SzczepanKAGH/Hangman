@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import *
 import random
+from tkinter import messagebox
 
 root = tk.Tk()
 root.geometry("700x600")
@@ -35,60 +36,19 @@ start_button.pack(side=BOTTOM, pady=80)
 
 
 #######################################
-###--------OKNO WYBOR POZIOMU-------###
+###--------OKNO INSTRUCJI GRY-------###
 frame_choose_level = tk.Frame(root, bg='#7CCD7C')
 label_level = tk.Label(frame_choose_level, bg='#008B45', height=2, text='Wybierz poziom trudnosci i kliknij GRAJ',
                        font=('Helvetica', 20, 'bold'))
 label_level.pack(fill='x', pady='20')
 
-
-
-_level_ = "Wybierz poziom:"
-
-def lvl_easy():
-    global _level_
-    _level_ = entry_level.get()
-    entry_level.delete(0, 'end')
-    _level_ = "LATWY"
-    entry_level.insert(0, _level_)
-    return 0
-def lvl_medium():
-    _level_ = entry_level.get()
-    entry_level.delete(0, 'end')
-    _level_ = "SREDNI"
-    entry_level.insert(0, _level_)
-    return 1
-def lvl_hard():
-    _level_ = entry_level.get()
-    entry_level.delete(0, 'end')
-    _level_ = "TRUDNY"
-    entry_level.insert(0, _level_)
-    return 2
-
-
-
-entry_level = tk.Entry(frame_choose_level)
-entry_level.insert(0, "Wybierz poziom" )
-entry_level.pack()
-a = entry_level.get()
-
-#--Komenda przeniesienia do okna glownego z wyboru poziomu--#
+#--Komenda przeniesienia do okna glownego--#
 def move_main_window():
     #Klikniecie jednego z trzech przyciskow spowoduje przejscie do glownego 'okna' --> frame_main
     frame_main.pack(fill='both', expand=1)
     frame_choose_level.forget()
 
-#--Przyciski wyboru poziomu--#
-easy_level_button = tk.Button(frame_choose_level, text="LATWY", height=2, width=30, bg='#006400', fg='white',
-                         font=('Helvetica', 10, 'bold'), command=lvl_easy)
-easy_level_button.pack(side=TOP, pady=30)
-medium_level_button = tk.Button(frame_choose_level, text="SREDNI", height=2, width=30, bg='#006400', fg='white',
-                         font=('Helvetica', 10, 'bold'), command=lvl_medium)
-medium_level_button.pack(side=TOP, pady=30)
-hard_level_button = tk.Button(frame_choose_level, text="TRUDNY", height=2, width=30, bg='#006400', fg='white',
-                         font=('Helvetica', 10, 'bold'), command=lvl_hard)
-hard_level_button.pack(side=TOP, pady=30)
-
+#--Przyciski GRAJ--#
 move_next_button = tk.Button(frame_choose_level, text="GRAJ", height=1, width=30, bg='#ADFF2F', fg='black',
                          font=('Helvetica', 10, 'bold'), command=move_main_window)
 move_next_button.pack(side=TOP, pady=30)
@@ -107,35 +67,54 @@ Images = [PhotoImage(file=r'C:\Users\HP\Desktop\wisielec\w.1.png'), PhotoImage(f
            PhotoImage(file=r'C:\Users\HP\Desktop\wisielec\w.11.png')]
 
 #--wybranie losowego slowa z pliku tekstowego--#
+hide_word=StringVar()
+def create_word():
+    global number_guess
+    global word_with_spaces
+    global level
+    global score
+    score = 0
+    level = 1
+    global cat_number
+    cat_number = 1
+    number_guess=0
+    file_with_words = open(r'C:\Users\HP\Desktop\wisielec\words_guess.txt')
+    words = file_with_words.readlines()
+    words = [word.upper() for word in words]
+    word_place = random.randint(0, 74)
+    main_word = words[word_place].strip()
+    word_with_spaces = " ".join(main_word)
+    hide_word.set(" ".join("_"*len(main_word)))
 
-word_category = ""
-word_place = 0
-file_with_words = open(r'C:\Users\HP\Desktop\wisielec\words_guess.txt')
-words = file_with_words.readlines()
-#Wylosowanie odpowiedniego slowa zaleznego od wybranego poziomu trudnosc
-if( _level_ == "easy" ):
-    word_place = random.randint(0,24)
-elif( _level_ == "medium" ):
-    word_place = random.randint(25, 49)
-elif( _level_ == "hard"):
-    word_place = random.randint(50, 74)
-#Nadanie odpowiedniej kategorii w zaleznosci od wybranego slowa
-if ( (word_place >= 0 and word_place <= 4) or (word_place >= 25 and word_place <= 29) or (word_place >= 50 and word_place <= 54) ):
-    word_category = "Zwierzeta"
-elif ( (word_place >= 5 and word_place <= 9) or (word_place >= 30 and word_place <= 34) or (word_place >= 55 and word_place <= 59) ):
-    word_category = "Owoce i warzywa"
-elif ( (word_place >= 10 and word_place <= 14) or (word_place >= 35 and word_place <= 39) or (word_place >= 60 and word_place <= 64) ):
-    word_category = "Angielskie slowka"
-elif ( (word_place >= 15 and word_place <= 19) or (word_place >= 40 and word_place <= 44) or (word_place >= 65 and word_place <= 69) ):
-    word_category = "Stolice"
-elif ( (word_place >= 20 and word_place <= 24) or (word_place >= 45 and word_place <= 49) or (word_place >= 70 and word_place <= 74) ):
-    word_category = "Panstwa"
+def guess_letter( letter ):
+    global number_guess
+    global level
+    global cat_number
+    global lev_name
+    txt = list( word_with_spaces )
+    guessed = list( hide_word.get() )
+    if word_with_spaces.count(letter) > 0:
+        for c in range( len(txt) ):
+            if txt[c]==letter:
+                guessed[c]=letter
+            hide_word.set("".join(guessed))
+            if hide_word.get()==word_with_spaces:
+                messagebox.showinfo("Wisielec", "Gratulacje, zdobądź więcej punktów!")
+    else:
+        number_guess+=1
+        label_hangman_steps.config(image=Images[number_guess])
+        if number_guess==10:
+            messagebox.showinfo("Wisielec", "Niestety nie udało się")
+    cat_number = 1
+    if( cat_number == 6 or cat_number == 11):
+        level += 1
 
-main_word = words[word_place].strip()
-word_with_spaces = " ".join(main_word)
-
-
-
+    if (level == 1):
+        lev_name = 'easy'
+    elif (level == 2):
+        lev_name = 'medium'
+    elif (level == 3):
+        lev_name = 'hard'
 
 
 #--Przyciski-litery do wyboru--##
@@ -151,7 +130,8 @@ x=0
 y=0
 number_of_button=0
 for letter in alphabet:
-    Letter_Button = tk.Button(label_letters_button, text=letter, bg='green', width=11, font=("Times", "10", "bold"))
+    Letter_Button = tk.Button(label_letters_button, text=letter, bg='green', width=11,
+                              command=lambda letter=letter: guess_letter(letter), font=("Times", "10", "bold"))
     Letter_Button.grid(row=y, column=x+1, ipady=5)
     x+=1
     if( x == 8 ):
@@ -159,21 +139,20 @@ for letter in alphabet:
         y+=1
 
 ##--Miejsce na slowo do zgadniecia--##
-label_word_guess = tk.Label(frame_main, bg='black')
+
+label_word_guess = tk.Label(frame_main, bg='black', textvariable=hide_word, fg='white',
+                            font=("Helvetica", "30", "bold"))
 label_word_guess.pack(side=BOTTOM, fill='x', ipady=50)
 
 ##--Miejsce na bledy wisielca oraz inne informacje dotyczace gry--##
 
-label_game_info = tk.Label(frame_main, bg='white')
-label_game_info.pack(ipadx=150, ipady=155, side=LEFT)
-label_hangman_steps = tk.Label(frame_main, bg='orange', text=a)
-label_hangman_steps.pack(ipadx=195, ipady=155, side=LEFT)
+label_game_SCORE = tk.Frame(frame_main, bg='white')
+label_game_SCORE.pack(ipadx=160, ipady=160, side=LEFT )
 
 
 
+label_hangman_steps = tk.Label(frame_main, bg='orange')
+label_hangman_steps.pack(ipadx=195, ipady=155, side=RIGHT)
 
-
-
-
-
+create_word()
 root.mainloop()
